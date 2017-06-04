@@ -1,3 +1,5 @@
+var bet = require('./bet.js');
+
 class Developer {
 
     constructor(initialMoney) {
@@ -12,15 +14,8 @@ class Developer {
         console.log('Apuesta');
     }
 
-    step() {
-        console.log('Lee posibles proyectos');
-
-        console.log('Decide si apostar');
-
-        console.log('Apuesta');
-    }
-
     bet(value,isPositiveBet){
+        // bet();
         console.log('Apuesta al proyecto '+value+' al lado de '+isPositiveBet);
     }
 
