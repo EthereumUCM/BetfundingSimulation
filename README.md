@@ -26,30 +26,25 @@ https://github.com/ethereumjs/testrpc/wiki/Installing-TestRPC-on-Windows
 macOS installation:
 >macOS Make sure you have the XCode Command Line Tools installed. These are needed in general to be able to compile most C based languages on your machine, as well as many npm modules.
 
-### Truffle
-```
-npm install -g truffle
-```
-
-see https://truffle.readthedocs.io/en/latest/getting_started/installation/ for more information.
-
 ## Execution
 1. Run TestRPC. Open a terminal and execute:
 ```
 testrpc
 ```
-2. Open a new terminal in the same directory as the project and execute:
+2. Open the file index.html in the browser and the command console with F12:
+3. In the browser console, execute the following function to deploy the contract:
 ```
-truffle compile
+deploy()
 ```
+4. Create a sample project:
 ```
-truffle migrate
+createSampleProject()
 ```
-3. In the same terminal, create a new project:
+5. Bet on that project with random values:
 ```
-truffle exec createProject.js
+randomBet(0)
 ```
-4. In the same terminal, create a sample bet:
+6. Check the status of the project:
 ```
-truffle exec bet.js
+getProjectBets(0)
 ```
