@@ -2,11 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <script src="jquery-3.2.1.min.js"></script>
   <script src="./web3.js"></script>
   <script src="./script.js"></script>
+  <script src="./Chart.min.js"></script>
 </head>
 
 <body>
+Contract Adress <input type="text" name="" id="bfaddr" value=""/>
+<button class="btn" onclick="deploy()">deploy</button><br>
+<button class="btn" onclick="createInitialProjects()">createSampleProject</button>
+<button class="btn" onclick="run()">Run sims</button>
+<button class="btn" onclick="log('Numprojects:'+getNumProjects())">Numprojects</button>
+<button class="btn" onclick="getProject(0)">getProject</button>
+<button class="btn" onclick="getProjectBets(0)">getProjectBets</button><br>
 
+<textarea name="" id="logarea" cols="50" rows="10"></textarea><br>
+
+<div><canvas id="piechart" width="400" height="400"></canvas></div>
+
+<!--
+
+<canvas id="canvas" style="display: block; width: 1428px; height: 714px;" width="1428" height="714"></canvas>
+
+<script>
+    var datas = [];
+
+    for (var i = 0 ; i < 10000 ;i ++ ){
+        datas[i] = randnBm();
+
+    }
+    datas.sort();
+    log(datas[datas.length-1]);
+    dataa = []
+    for (var i = 0 ; i < datas.length ;i ++ ){
+        dataa[i] = {
+            x: i,
+            y: datas[i],
+        }
+    }
+    var config = {
+            datasets: [{
+                label: "My First dataset",
+                backgroundColor: '#fff000',
+                borderColor: '#fff000',
+                data: dataa,
+            }]
+    };
+    var ctx = document.getElementById("canvas").getContext("2d");
+    window.myScatter = Chart.Scatter(ctx, {
+        data: config,
+        options: {
+            title: {
+                display: true,
+                text: 'Chart.js Scatter Chart'
+            },
+        }
+    });
+</script> !-->
 </body>
 </html>

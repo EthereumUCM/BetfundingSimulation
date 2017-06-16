@@ -48,3 +48,26 @@ randomBet(0)
 ```
 getProjectBets(0)
 ```
+
+
+
+## Cosas pentiendes
+
+- Oraculo que controle todo
+- Carga los contratos en memoria
+- Simulacion con proyectos inicales
+- Script para crear 
+- Tiempo límite con turnos o nº de bloques o variables
+- Tiempo de precalentamiento
+    - X turnos para crear proyectos
+    - Despues arrancas todo
+- Añadir agentes para crear proyectos
+- Ver funciones de aleatoriedad
+    - Ver que no sea uniforme, lo ideal es normal.
+- Flujo:
+    - Precalentamiento
+    - Cada agente recorrre proyectos
+    - Cada agente decide si apuesta o no
+    - Los oraculos deciden si se termina
+    - Actualizan los datos de los proyectos
+    - Captura datos que nos interesen
