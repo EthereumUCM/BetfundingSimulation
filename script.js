@@ -102,7 +102,7 @@ function investorBehaviour() {
 
     for ( var i = 0 ; i < 333 ; i++ ) {
         for ( var j = 0 ; i < projects.length ; i++ ) {
-            if ( randnBm() > 0.56 ) {
+            if ( randnBm() > 0.76 ) {
                 var amountbet = 1000 * randnBm(); //Calc amount
                 betfundingInstance.bet( j, false, { value: amountbet, from: investorAccounts[ i ], gas: 3000000 } );
             }
@@ -114,7 +114,7 @@ function developerBehaviour() {
 
     for ( var i = 0 ; i < 333 ; i++ ) {
         for ( var j = 0 ; i < projects.length ; i++ ) {
-            if ( randnBm() > 0.76 ) {
+            if ( randnBm() > 0.86 ) {
                 var amountbet = 1000 * randnBm(); //Calc amount
                 betfundingInstance.bet( j, true, { value: amountbet, from: developerAccounts[ i ], gas: 3000000 } );
             }
@@ -126,7 +126,7 @@ function speculatorBehaviour() {
 
     for ( var i = 0 ; i < 333 ; i++ ) {
         for ( var j = 0 ; i < projects.length ; i++ ) {
-            if ( randnBm() > 0.89 ) {
+            if ( randnBm() > 0.92 ) {
                 var amountbet = 1000 * randnBm(); //Calc amount
                 if ( randnBm() > 0.5 ) {
                     betfundingInstance.bet( j, true, { value: amountbet, from: speculatorAccounts[ i ], gas: 3000000 } );
@@ -191,14 +191,25 @@ function randAmount() {
 }
 
 function printChart() {
+    var pb = betfundingInstance.getBets.call( 0 )[ 0 ].toNumber();
+    var nb = betfundingInstance.getBets.call( 0 )[ 2 ].toNumber();
+    var ap = betfundingInstance.getBets.call( 0 )[ 1 ].toNumber();
+    var an = betfundingInstance.getBets.call( 0 )[ 3 ].toNumber();
+
+    for (var i = 1; i < projects.length ; i++){
+         pb += betfundingInstance.getBets.call( i )[ 0 ].toNumber();
+         nb += betfundingInstance.getBets.call( i )[ 2 ].toNumber();
+         ap += betfundingInstance.getBets.call( i )[ 1 ].toNumber();
+         an += betfundingInstance.getBets.call( i )[ 3 ].toNumber();
+    }
 
     var config = {
         type: "pie",
         data: {
             datasets: [ {
                 data: [
-                    betfundingInstance.getBets.call( 0 )[ 0 ].toNumber(),
-                    betfundingInstance.getBets.call( 0 )[ 2 ].toNumber()
+                    pb,
+                    nb
                 ],
                 backgroundColor: [
                     "#ff0000",
@@ -218,8 +229,8 @@ function printChart() {
 
     var newDataset = {
         data: [
-            betfundingInstance.getBets.call( 0 )[ 1 ].toNumber(),
-            betfundingInstance.getBets.call( 0 )[ 3 ].toNumber()
+            ap,
+            an
         ],
         backgroundColor: [
             "#ff0000",
