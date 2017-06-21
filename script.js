@@ -30,6 +30,9 @@ var Betfunding = web3.eth.contract( JSON.parse( abi ) );
 var betfundingInstance = Betfunding.at( $( "#bfaddr" ).val() );
 
 var projects = [];
+var epochs = 0;
+var pbets = [];
+var nbets = [];
 
 function deploy() {
     betfundingInstance = Betfunding.new(
@@ -67,7 +70,11 @@ function createInitialProjects() {
             socialImpact:socialImpact,
             desc:desc,
             date:date,
-            oracle:oracle
+            oracle:oracle,
+            npbets:0,
+            nnbets:0,
+            apbets:0,
+            anbets:0
         };
         createProject( projects[ i ] );
     }
@@ -91,6 +98,9 @@ var eBets = betfundingInstance.Bet( function( error, result ) {
 
 // Main loop
 function run() {
+    epochs += 1;
+    pbets[ epochs ] = 0;
+    nbets[ epochs ] = 0;
     investorBehaviour();
     developerBehaviour();
     speculatorBehaviour();
@@ -101,10 +111,16 @@ function run() {
 function investorBehaviour() {
 
     for ( var i = 0 ; i < 333 ; i++ ) {
-        for ( var j = 0 ; i < projects.length ; i++ ) {
+        for ( var j = 0 ; j < projects.length ; j++ ) {
             if ( randnBm() > 0.76 ) {
-                var amountbet = 1000 * randnBm(); //Calc amount
-                betfundingInstance.bet( j, false, { value: amountbet, from: investorAccounts[ i ], gas: 3000000 } );
+                try {
+                    var amountBet = 1000 * randnBm(); //Calc amount
+                    betfundingInstance.bet( j, false, { value: amountBet, from: investorAccounts[ i ], gas: 3000000 } );
+                    nbets[ epochs ] += 1;
+                    projects[ j ].nnbets += 1;
+                    projects[ j ].anbets += amountBet;
+                } catch ( err ) {
+                }
             }
         }
     }
@@ -113,10 +129,16 @@ function investorBehaviour() {
 function developerBehaviour() {
 
     for ( var i = 0 ; i < 333 ; i++ ) {
-        for ( var j = 0 ; i < projects.length ; i++ ) {
-            if ( randnBm() > 0.86 ) {
-                var amountbet = 1000 * randnBm(); //Calc amount
-                betfundingInstance.bet( j, true, { value: amountbet, from: developerAccounts[ i ], gas: 3000000 } );
+        for ( var j = 0 ; j < projects.length ; j++ ) {
+            if ( randnBm() > 0.83 ) {
+                try {
+                    var amountBet = 1000 * randnBm(); //Calc amount
+                    betfundingInstance.bet( j, true, { value: amountBet, from: developerAccounts[ i ], gas: 3000000 } );
+                    pbets[ epochs ] += 1;
+                    projects[ j ].npbets += 1;
+                    projects[ j ].apbets += amountBet;
+                }catch ( err ) {
+                }
             }
         }
     }
@@ -125,14 +147,25 @@ function developerBehaviour() {
 function speculatorBehaviour() {
 
     for ( var i = 0 ; i < 333 ; i++ ) {
-        for ( var j = 0 ; i < projects.length ; i++ ) {
+        for ( var j = 0 ; j < projects.length ; j++ ) {
             if ( randnBm() > 0.92 ) {
-                var amountbet = 1000 * randnBm(); //Calc amount
+                var amountBet = 1000 * randnBm(); //Calc amount
                 if ( randnBm() > 0.5 ) {
-                    betfundingInstance.bet( j, true, { value: amountbet, from: speculatorAccounts[ i ], gas: 3000000 } );
+                    try {
+                        betfundingInstance.bet( j, true, { value: amountBet, from: speculatorAccounts[ i ], gas: 3000000 } );
+                        pbets[ epochs ] += 1;
+                        projects[ j ].npbets += 1;
+                        projects[ j ].apbets += amountBet;
+                    }catch ( err ) {
+                    }
                 } else {
-
-                    betfundingInstance.bet( j, false, { value: amountbet, from: speculator, gas: 3000000 } );
+                    try {
+                        betfundingInstance.bet( j, false, { value: amountBet, from: speculatorAccounts[ i ], gas: 3000000 } );
+                        nbets[ epochs ] += 1;
+                        projects[ j ].nnbets += 1;
+                        projects[ j ].anbets += amountBet;
+                    }catch ( err ) {
+                    }
                 }
             }
         }
@@ -169,6 +202,12 @@ function getNumProjects() {
         log( projects[ i ].name );
         log( "difficulty: " + projects[ i ].difficulty );
         log( "social impact: " + projects[ i ].socialImpact );
+        log( "Positive bets: " + projects[ i ].npbets );
+        log( "Amount of positive bets: " + projects[ i ].apbets );
+        log( "-----" );
+        log( "Negative bets: " + projects[ i ].nnbets );
+        log( "Amount of negative bets: " + projects[ i ].anbets );
+        log( "_________" );
     }
     return betfundingInstance.numProjects.call().toNumber();
 }
@@ -186,61 +225,38 @@ function getProjectBets( i ) {
     printChart();
 }
 
-function randAmount() {
-    return Math.random() * 1000;
-}
-
 function printChart() {
-    var pb = betfundingInstance.getBets.call( 0 )[ 0 ].toNumber();
-    var nb = betfundingInstance.getBets.call( 0 )[ 2 ].toNumber();
-    var ap = betfundingInstance.getBets.call( 0 )[ 1 ].toNumber();
-    var an = betfundingInstance.getBets.call( 0 )[ 3 ].toNumber();
+    var pb = projects[ 0 ].npbets;
+    var nb = projects[ 0 ].nnbets;
+    var ap = projects[ 0 ].apbets;
+    var an = projects[ 0 ].anbets;
 
-    for (var i = 1; i < projects.length ; i++){
-         pb += betfundingInstance.getBets.call( i )[ 0 ].toNumber();
-         nb += betfundingInstance.getBets.call( i )[ 2 ].toNumber();
-         ap += betfundingInstance.getBets.call( i )[ 1 ].toNumber();
-         an += betfundingInstance.getBets.call( i )[ 3 ].toNumber();
+    for ( var i = 1; i < projects.length ; i++ ) {
+        pb += projects[ i ].npbets;
+        nb += projects[ i ].nnbets;
+        ap += projects[ i ].apbets;
+        an += projects[ i ].anbets;
     }
 
-    var config = {
-        type: "pie",
-        data: {
-            datasets: [ {
-                data: [
-                    pb,
-                    nb
-                ],
-                backgroundColor: [
-                    "#ff0000",
-                    "#0000ff"
-                ],
-                label: "Number of Bets"
-            } ],
-            labels: [
-                "Positive Bets",
-                "Negative Bets"
-            ]
-        },
-        options: {
-            responsive: true
-        }
-    };
+    window.myPie.config.data.datasets[ 0 ].data =  [ nb, pb ];
+    window.myPie.config.data.datasets[ 1 ].data =  [ an, ap ];
+    window.myPie.update();
 
-    var newDataset = {
-        data: [
-            ap,
-            an
-        ],
-        backgroundColor: [
-            "#ff0000",
-            "#0000ff"
-        ],
-        label: "Amount of Bets"
-    };
-    config.data.datasets.push( newDataset );
-    var ctx = document.getElementById( "piechart" ).getContext( "2d" );
-    window.myPie = new Chart( ctx, config );
+    var pbetsplot = [];
+    var nbetsplot = [];
+    for ( var i = 0 ; i < epochs; i++ ) {
+        pbetsplot.push( {
+            x: i + 1,
+            y:  pbets[ i + 1 ]
+        } );
+        nbetsplot.push( {
+            x: i + 1,
+            y:  nbets[ i + 1 ]
+        } );
+    }
+    window.myScatter.config.data.datasets[ 0 ].data = pbetsplot;
+    window.myScatter.config.data.datasets[ 1 ].data = nbetsplot;
+    window.myScatter.update();
 }
 
 // Standard Normal variate using Box-Muller transform.

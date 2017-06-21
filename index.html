@@ -10,21 +10,97 @@
 
 <body>
 Contract Adress <input type="text" name="" id="bfaddr" value=""/>
-<button class="btn" onclick="deploy()">deploy</button><br>
-<button class="btn" onclick="createInitialProjects()">createSampleProject</button>
-<button class="btn" onclick="run()">Run sims</button>
-<button class="btn" onclick="log('Numprojects:'+getNumProjects())">Numprojects</button>
-<button class="btn" onclick="getProject(0)">getProject</button>
-<button class="btn" onclick="getProjectBets(0)">getProjectBets</button><br>
+<button class="btn" onclick="deploy()">Deploy Contract</button><br>
+<button class="btn" onclick="createInitialProjects()">Create initial projects</button>
+<button class="btn" onclick="run()">Run simulation epoch</button>
+<button class="btn" onclick="for(var i = 0 ; i < 10; i++){run()}">Run 10 simulation epochs</button>
+<button class="btn" onclick="log('Numprojects:'+getNumProjects())">Get projects info</button><br />
 
 <textarea name="" id="logarea" cols="50" rows="10"></textarea><br>
 
-<div><canvas id="piechart" width="400" height="400"></canvas></div>
+<div style="width: 30%;float: left"><canvas id="piechart"></canvas></div>
+<div style="width: 60%;float: left"><canvas id="plotchart"></canvas></div>
 
+<script>
+
+    var config = {
+        type: "pie",
+        data: {
+            datasets: [ {
+                data: [
+                    0,0
+                ],
+                backgroundColor: [
+                    "#ff0000",
+                    "#0000ff"
+                ],
+                label: "Number of Bets"
+            } ],
+            labels: [
+                "Positive Bets",
+                "Negative Bets"
+            ]
+        },
+        options: {
+            responsive: true
+        }
+    };
+
+    var newDataset = {
+        data: [
+            0,0
+        ],
+        backgroundColor: [
+            "#ff0000",
+            "#0000ff"
+        ],
+        label: "Amount of Bets"
+    };
+    config.data.datasets.push( newDataset );
+    var ctx = document.getElementById( "piechart" ).getContext( "2d" );
+    window.myPie = new Chart( ctx, config );
+
+    var config2 = {
+        type: "line",
+        data: {}
+    };
+
+    var pbetsplot = [];
+    var nbetsplot = [];
+    for ( var i = 0 ; i < epochs; i++ ) {
+        pbetsplot.push( {
+            x: i + 1,
+            y:  pbets[ i + 1 ]
+        } );
+        nbetsplot.push( {
+            x: i + 1,
+            y:  nbets[ i + 1 ]
+        } );
+    }
+    scatterChartData = { datasets: [ {
+        label: "NPosbets",
+        backgroundColor: "#0000ff",
+        borderColor: "#0000ff",
+        data: pbetsplot
+    }, {
+        label: "NNegBets",
+        backgroundColor: "#ff0000",
+        borderColor: "#ff0000",
+        data: nbetsplot
+    } ]
+    };
+    var ctx2 = document.getElementById( "plotchart" ).getContext( "2d" );
+    window.myScatter = Chart.Scatter( ctx2, {
+        data: scatterChartData,
+        options: {
+            title: {
+                display: true,
+                text: "Chart.js Scatter Chart"
+            }
+        }
+    } );
+</script>
 <!--
-
-<canvas id="canvas" style="display: block; width: 1428px; height: 714px;" width="1428" height="714"></canvas>
-
 <script>
     var datas = [];
 
