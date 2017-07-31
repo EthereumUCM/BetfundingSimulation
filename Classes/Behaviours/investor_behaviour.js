@@ -14,6 +14,7 @@ class InvestorBehaviour {
         decision.side = false;
         decision.amount = Math.round(100 * randnBm());
         decision.bet = true;
+        decision.type = 1;
       }
     }
     return decision;

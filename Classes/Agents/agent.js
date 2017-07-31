@@ -56,10 +56,24 @@ class Agent {
         numPositiveBets[epochs] += 1;
         decision.project.numPosBets += 1;
         decision.project.amountPosBets += amountBet;
+        decision.project.difficulty -= randnBm() / 13;
       } else {
         numNegativeBets[epochs] += 1;
         decision.project.numNegBets += 1;
         decision.project.amountNegBets += amountBet;
+      }
+      switch (decision.type) {
+        case 0:
+          decision.project.ndev += 1;
+          break;
+        case 1:
+          decision.project.ninv += 1;
+          break;
+        case 2:
+          decision.project.nspec += 1;
+          break;
+        default:
+
       }
     } catch (error) {}
   }

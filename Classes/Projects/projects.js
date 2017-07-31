@@ -11,6 +11,9 @@ class Project {
     this._numNegBets = 0;
     this._amountPosBets = 0;
     this._amountNegBets = 0;
+    this._nspec = 0;
+    this._ndev = 0;
+    this._ninv = 0;
   }
 
   // Getters and setters of index
@@ -123,6 +126,36 @@ class Project {
 
   set verified(verified) {
     this._verified = verified;
+  }
+
+  // Getters and setters of nspec
+
+  get nspec() {
+    return this._nspec;
+  }
+
+  set nspec(nspec) {
+    this._nspec = nspec;
+  }
+
+  // Getters and setters of ninv
+
+  get ninv() {
+    return this._ninv;
+  }
+
+  set ninv(ninv) {
+    this._ninv = ninv;
+  }
+
+  // Getters and setters of ndev
+
+  get ndev() {
+    return this._ndev;
+  }
+
+  set ndev(ndev) {
+    this._ndev = ndev;
   }
 
 }

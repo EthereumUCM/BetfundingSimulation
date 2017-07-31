@@ -99,7 +99,7 @@ function run() {
   numPositiveBets[epochs] = 0;
   numNegativeBets[epochs] = 0;
   for (let i = 0; i < agents.length; i++) {
-    agents[i].epoch();
+    setTimeout(agents[i].epoch(), 0);
   }
   oracleBehaviour();
   printChart();

@@ -14,6 +14,7 @@ class DeveloperBehaviour {
         decision.side = true;
         decision.amount = Math.round(200 * randnBm());
         decision.bet = true;
+        decision.type = 0;
       }
     }
     return decision;

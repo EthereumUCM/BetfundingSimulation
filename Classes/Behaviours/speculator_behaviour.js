@@ -10,10 +10,18 @@ class SpeculatorBehaviour {
     }
 
     if (!project.verified) {
-      if (randnBm() > developerBetChance) {
-        decision.side = randnBm() > 0.5;
+      if (project.difficulty > 0.4 && project.amountPosBets > 200) {
+        decision.side = false;
         decision.amount = Math.round(200 * randnBm());
         decision.bet = true;
+        decision.type = 2;
+      }
+
+      if (project.difficulty < 0.3 && project.amountNegBets > 300) {
+        decision.side = true;
+        decision.amount = Math.round(200 * randnBm());
+        decision.bet = true;
+        decision.type = 2;
       }
     }
     return decision;

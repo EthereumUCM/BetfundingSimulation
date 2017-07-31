@@ -5,6 +5,9 @@ function printChart() {
   var an = 0;
   var pv = 0;
   var pip = 0;
+  var nspec = 0;
+  var ninv = 0;
+  var ndev = 0;
 
   for (var i = 0; i < projects.length; i++) {
     pb += projects[i].numPosBets;
@@ -16,6 +19,10 @@ function printChart() {
     } else {
       pip += 1;
     }
+
+    nspec += projects[i].nspec;
+    ninv += projects[i].ninv;
+    ndev += projects[i].ndev;
   }
 
   window.myPie.config.data.datasets[0].data = [nb, pb];
@@ -24,6 +31,9 @@ function printChart() {
 
   window.myPie2.config.data.datasets[0].data = [pv, pip];
   window.myPie2.update();
+
+  window.myPie3.config.data.datasets[0].data = [ndev, ninv, nspec];
+  window.myPie3.update();
 
   var pbetsplot = [];
   var nbetsplot = [];
